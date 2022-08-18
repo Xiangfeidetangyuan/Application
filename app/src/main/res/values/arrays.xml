@@ -2,6 +2,6 @@
 <resources>
     <string-array name="rank" >
         <item>Weekly Sales Ranking</item>
-        <item>Annual Sales Ranking</item>
+        <item>NAV</item>
     </string-array>
 </resources>

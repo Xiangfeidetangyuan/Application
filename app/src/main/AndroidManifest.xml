@@ -17,7 +17,7 @@
             android:name=".FundActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".FundListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

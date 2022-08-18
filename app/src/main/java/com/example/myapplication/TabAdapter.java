@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TabAdapter extends FragmentStateAdapter {
 
-    List<Fragment> fragmentList ;
+    private List<Fragment> fragmentList ;
     public TabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,List<Fragment> fragmentList) {
         super(fragmentManager, lifecycle);
        this.fragmentList = fragmentList;
