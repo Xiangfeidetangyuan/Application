@@ -20,7 +20,9 @@ import com.example.myapplication.bean.Fund;
 import com.example.myapplication.ui.adapter.FundAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FundListFragment extends Fragment {
 
@@ -30,8 +32,13 @@ public class FundListFragment extends Fragment {
    private FundAdapter mFundAdapter;
    private List<Fund> mList;
 
+    private boolean selectMode =false;
+    private boolean isUpdateSelectMode = false;
+
+
     // 标识 要接收 的参数
     private static final String ARG_PARAM1 = "param1";
+
    // 第几个Tab
    private int position;
 
@@ -77,6 +84,12 @@ public class FundListFragment extends Fragment {
 
     public void  initView(View view){
         mFundAdapter = new FundAdapter(mList,position);
+        mFundAdapter.setAdapterListener(new FundAdapter.AdapterListener() {
+            @Override
+            public boolean getSelectMode() {
+                return selectMode;
+            }
+        });
         rvFund = view.findViewById(R.id.rv_fund);
         rvFund.setAdapter(mFundAdapter);
 
@@ -192,12 +205,18 @@ public class FundListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mFundAdapter.notifyDataSetChanged();
+        if(isUpdateSelectMode){
+            mFundAdapter.notifyDataSetChanged();
+        }
+      //  mFundAdapter.notifyDataSetChanged();
     }
 
     public void  updateData(){
         mFundAdapter.notifyDataSetChanged();
     }
 
-
+    public  void setSelectMode(boolean mode){
+        selectMode = mode;
+        isUpdateSelectMode = true;
+    }
 }

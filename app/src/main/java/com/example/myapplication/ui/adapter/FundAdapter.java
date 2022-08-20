@@ -31,6 +31,8 @@ public class FundAdapter extends RecyclerView.Adapter  {
     private List<Fund> mList;
     private int fragmentPosition;
 
+    private boolean selectMode;
+    private Set<String> fundIdAndNameSet;
 
     public FundAdapter(List<Fund> list,int position) {
         this.mList = list;
@@ -48,7 +50,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-
+        selectMode = adapterListener.getSelectMode();
         Fund fund =  mList.get(position);
         String fundName = fund.getFundName();
         // 给 子项设置点击事件
@@ -67,8 +69,8 @@ public class FundAdapter extends RecyclerView.Adapter  {
         String fundIdAndName = fund.getFundId()+" - "+ fundName;
         viewHolder.tvFundListFundIdAndName.setText(fundIdAndName);
 
-       Set<String> fundIdAndNameSet = Constant.fundIdAndNameSet;
-        if(Constant.selectMode){
+        fundIdAndNameSet = Constant.fundIdAndNameSet;
+        if(selectMode){
             viewHolder.checkBoxFundList.setVisibility(View.VISIBLE);
         }else {
             viewHolder.checkBoxFundList.setVisibility(View.GONE);
@@ -136,5 +138,14 @@ public class FundAdapter extends RecyclerView.Adapter  {
             tvFundListFundType= itemView.findViewById(R.id.tv_fundList_fundType);
             ivFundListRight = itemView.findViewById(R.id.iv_fundList_right);
         }
+    }
+
+    public void setAdapterListener(AdapterListener adapterListener) {
+        this.adapterListener = adapterListener;
+    }
+
+    AdapterListener adapterListener;
+   public interface AdapterListener{
+        boolean getSelectMode();
     }
 }

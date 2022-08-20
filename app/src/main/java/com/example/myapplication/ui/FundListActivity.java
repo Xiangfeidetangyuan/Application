@@ -42,8 +42,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class FundListActivity extends AppCompatActivity {
     private static final String TAG = FundListActivity.class.getSimpleName();
@@ -70,6 +72,7 @@ public class FundListActivity extends AppCompatActivity {
 
     private Spinner spinnerFundList;
 
+    private boolean selectMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,9 +141,14 @@ public class FundListActivity extends AppCompatActivity {
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 每一个 fragment 都进行请求
+                for(int i=0;i<fragmentList.size();i++){
+                    FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+                    fragment.setSelectMode(true);
+                }
+                selectMode = true;
                 Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
-
-                Constant.selectMode = true;
+                //Constant.selectMode = true;
                 FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
                 fragment.updateData();
 
@@ -389,7 +397,7 @@ public class FundListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(Constant.selectMode){
+        if(selectMode){
             // 弹窗提醒
             // todo 封装Dialog
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -398,7 +406,12 @@ public class FundListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // 清除
-                            Constant.selectMode = false;
+                            // 每一个 fragment 都进行处理
+                            for(int i=0;i<fragmentList.size();i++){
+                                FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+                                fragment.setSelectMode(false);
+                            }
+                            selectMode = false;
                             Constant.fundIdAndNameSet.clear();
                             clearSelectedItem();
                             rvFundListSelectTool.setVisibility(INVISIBLE);
