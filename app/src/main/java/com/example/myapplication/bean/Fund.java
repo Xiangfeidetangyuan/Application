@@ -4,13 +4,13 @@ public class Fund {
     String fundId;
     String fundName;
     String fundType;
-    String fundAnnualYields;
+    String annualYields;
 
-    public Fund(String fundId, String fundName, String fundType, String fundAnnualYields) {
+    public Fund(String fundId, String fundName, String fundType, String annualYields) {
         this.fundId = fundId;
         this.fundName = fundName;
         this.fundType = fundType;
-        this.fundAnnualYields = fundAnnualYields;
+        this.annualYields = annualYields;
     }
 
     public String getFundId() {
@@ -25,7 +25,7 @@ public class Fund {
         return fundType;
     }
 
-    public String getFundAnnualYields() {
-        return fundAnnualYields;
+    public String getAnnualYields() {
+        return annualYields;
     }
 }

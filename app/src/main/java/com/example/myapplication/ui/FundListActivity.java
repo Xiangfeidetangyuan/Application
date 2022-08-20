@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.ui;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -10,23 +10,31 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.biz.user.BuyConfirmActivity;
+import com.example.myapplication.Constant;
+import com.example.myapplication.R;
+import com.example.myapplication.ui.adapter.TabAdapter;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.tabs.TabItem;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +54,8 @@ public class FundListActivity extends AppCompatActivity {
     private Button btnClear;
     private Button btnConfirm;
     private SearchView searchView;
+    private ImageView ivFundListBack;
+    private ImageView ivFundListMyHoldings;
 
     private List<String> tabTitleList;
     private List<Fragment> fragmentList;
@@ -56,6 +66,11 @@ public class FundListActivity extends AppCompatActivity {
     // 选择 基金的个数
     private TextView tvFundListSelectNum;
 
+    private EditText etSearchView;
+
+    private Spinner spinnerFundList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +80,10 @@ public class FundListActivity extends AppCompatActivity {
         initView();
         setUpTabBadge();
 
-        //设置状态栏透明
-        makeStatusBarTransparent(this);
-        //状态栏文字自适应
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        //设置状态栏透明
+//        makeStatusBarTransparent(this);
+//        //状态栏文字自适应
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
     }
 
@@ -124,8 +139,11 @@ public class FundListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
+
+                Constant.selectMode = true;
                 FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-                fragment.setDataMode(true);
+                fragment.updateData();
+
                 // 隐藏
                 btnCalculate.setVisibility(View.GONE);
                 btnClear.setVisibility(VISIBLE);
@@ -146,7 +164,12 @@ public class FundListActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
 
+                intent.putStringArrayListExtra("EXTRA_KEY_FUND_ID_AND_NAME_LIST",new ArrayList<>(Constant.fundIdAndNameSet));
+                // todo 页面跳转
+                intent.setClass(getApplication(), BuyConfirmActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -154,7 +177,77 @@ public class FundListActivity extends AppCompatActivity {
         tvFundListSelectNum = findViewById(R.id.tv_fundList_selectNum);
 
         searchView = findViewById(R.id.searchView);
+        etSearchView = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        etSearchView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //文字提交的时候哦回调，newText是最后提交搜索的文字
+                Log.d(TAG,"query:"+query);
+                Constant.content = query;
+                // todo 发起请求
+                getQueryData(query,getOrder());
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //在文字改变的时候回调，query是改变之后的文字
+                return false;
+            }
+        });
+
+        ivFundListBack = findViewById(R.id.iv_fundList_back);
+        ivFundListBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 onBackPressed();
+            }
+        });
+
+        ivFundListMyHoldings = findViewById(R.id.iv_fundList_myholdings);
+        ivFundListMyHoldings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getApplication(),MyHoldingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        spinnerFundList = findViewById(R.id.spinner_fundList);
+        spinnerFundList.setSelection(0,true);
+        spinnerFundList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Constant.order = position;
+                getQueryData(getQuery(),position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+    private int getOrder(){
+        return spinnerFundList.getSelectedItemPosition();
+    }
+    private String getQuery(){
+        return etSearchView.getText().toString();
+    }
+
+    /**
+     *  调用后端接口 获取数据
+     */
+    private void getQueryData(String query,int order) {
+        Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition()+"query:"+query+"order:"+order);
+        // 每一个 fragment 都进行请求
+        for(int i=0;i<fragmentList.size();i++){
+            FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+            fragment.getSearchData(query, order);
+        }
     }
 
     /**
@@ -185,8 +278,10 @@ public class FundListActivity extends AppCompatActivity {
                 // 判断是否为0
                 if(cur ==0){
                     tvFundListSelectNum.setText("0");
+                    btnConfirm.setEnabled(false);
                 }else {
                     tvFundListSelectNum.setText(cur+"");
+                    btnConfirm.setEnabled(true);
                 }
             }
         }
@@ -292,4 +387,33 @@ public class FundListActivity extends AppCompatActivity {
         fragment.updateData();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(Constant.selectMode){
+            // 弹窗提醒
+            // todo 封装Dialog
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setMessage("If you back, the selected funds will be clear.")
+                    .setNeutralButton("Back", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 清除
+                            Constant.selectMode = false;
+                            Constant.fundIdAndNameSet.clear();
+                            clearSelectedItem();
+                            rvFundListSelectTool.setVisibility(INVISIBLE);
+                            btnConfirm.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
+                            btnCalculate.setVisibility(VISIBLE);
+                        }
+                    })
+                    .setPositiveButton("Stay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
+        }
+
+    }
 }

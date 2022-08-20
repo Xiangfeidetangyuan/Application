@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +14,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Constant;
+import com.example.myapplication.ui.Event;
+import com.example.myapplication.R;
 import com.example.myapplication.bean.Fund;
+import com.example.myapplication.ui.FundActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -45,20 +48,24 @@ public class FundAdapter extends RecyclerView.Adapter  {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
+
+        Fund fund =  mList.get(position);
+        String fundName = fund.getFundName();
         // 给 子项设置点击事件
         viewHolder.ivFundListRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"点击了"+ position);
                 Intent intent = new Intent();
-                intent.setClass(mContext,FundActivity.class);
+                intent.putExtra("EXTRA_KEY_FUND_ID",fund.getFundId());
+                intent.putExtra("EXTRA_KEY_FUND_NAME",fund.getFundName());
+                intent.putExtra("EXTRA_KEY_FUND_TYPE",fund.getFundType());
+                intent.setClass(mContext, FundActivity.class);
                 mContext.startActivity(intent);
             }
         });
-        Fund fund =  mList.get(position);
-        String fundName = fund.getFundName();
         String fundIdAndName = fund.getFundId()+" - "+ fundName;
-        viewHolder.tv_fundList_fundId_and_name.setText(fundIdAndName);
+        viewHolder.tvFundListFundIdAndName.setText(fundIdAndName);
 
        Set<String> fundIdAndNameSet = Constant.fundIdAndNameSet;
         if(Constant.selectMode){
@@ -77,7 +84,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
                 if(fundIdAndNameSet.contains(fundIdAndName)){
                     // 如果 包含，则撤销
                     fundIdAndNameSet.remove(fundIdAndName);
-                    // todo 更新Tab
+                    // 更新角标
                     EventBus.getDefault().post(new Event(false,fund));
                 }else {
                     // 如果不包含 ，则添加
@@ -104,7 +111,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
         }else {
             viewHolder.tvFundListFundType.setVisibility(View.GONE);
         }
-        viewHolder.tvFundListAnnualYieldsNumber.setText(fund.getFundAnnualYields());
+        viewHolder.tvFundListAnnualYieldsNumber.setText(String.format("%s%%", fund.getAnnualYields()));
     }
 
     @Override
@@ -116,7 +123,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CheckBox checkBoxFundList;
-        private TextView tv_fundList_fundId_and_name;
+        private TextView tvFundListFundIdAndName;
         private TextView tvFundListAnnualYieldsNumber;
         private TextView tvFundListFundType;
         private ImageView ivFundListRight;
@@ -124,7 +131,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBoxFundList= itemView.findViewById(R.id.checkBox_fundList);
-            tv_fundList_fundId_and_name = itemView.findViewById(R.id.tv_fundList_fundId_and_name);
+            tvFundListFundIdAndName = itemView.findViewById(R.id.tv_fundList_fundId_and_name);
             tvFundListAnnualYieldsNumber = itemView.findViewById(R.id.tv_fundList_annualYields_number);
             tvFundListFundType= itemView.findViewById(R.id.tv_fundList_fundType);
             ivFundListRight = itemView.findViewById(R.id.iv_fundList_right);

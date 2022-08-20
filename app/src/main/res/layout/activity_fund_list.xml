@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FundListActivity">
+    tools:context=".ui.FundListActivity">
 
     <LinearLayout
         android:id="@+id/lv_top"
@@ -19,6 +19,7 @@
             android:layout_marginBottom="@dimen/px_10">
 
             <ImageView
+                android:id="@+id/iv_fundList_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/px_6"
@@ -34,6 +35,7 @@
                 android:textSize="18sp" />
 
             <ImageView
+                android:id="@+id/iv_fundList_myholdings"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
@@ -49,6 +51,7 @@
             android:layout_marginBottom="@dimen/px_6"
             android:layout_marginLeft="@dimen/px_12"
             android:layout_marginRight="@dimen/px_12"
+            style="@style/searchStyle"
             android:background="@drawable/bg_searchview"
             app:defaultQueryHint="Please search by product name or code"
             app:iconifiedByDefault="false"
@@ -62,11 +65,18 @@
             app:tabMaxWidth="100dp"
             app:tabTextAppearance="@style/TabLayoutTextStyle"></com.google.android.material.tabs.TabLayout>
     </LinearLayout>
+    <View
+        android:background="#F5F5F5"
+        android:layout_width="match_parent"
+        android:layout_toLeftOf="@id/spinner_fundList"
+        android:layout_height="20dp"
+        android:layout_below="@id/lv_top"
+        android:entries="@array/rank" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_fundList"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="22dp"
         android:layout_below="@id/lv_top"
         android:layout_alignParentEnd="true"
         android:entries="@array/rank" />
@@ -76,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rv_bottom"
-        android:layout_below="@id/spinner"
+        android:layout_below="@id/spinner_fundList"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <RelativeLayout
@@ -136,22 +146,25 @@
             android:gravity="center_horizontal"
             >
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_clear"
                 android:text="Clear"
                 android:textAllCaps="false"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                style="@style/clearButton"
+                android:visibility="gone"
                 android:textColor="#333333"
                 android:layout_height="49dp"/>
             <Button
-                android:visibility="gone"
                 android:id="@+id/btn_confirm"
                 android:text="Confirm"
+                android:enabled="false"
                 android:textAllCaps="false"
                 android:layout_marginLeft="@dimen/px_12"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:layout_height="49dp"/>
 

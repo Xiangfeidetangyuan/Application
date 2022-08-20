@@ -12,7 +12,8 @@
         <item name="android:textColor">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
-
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:textAllCaps">false</item>
 
     </style>
 
@@ -28,4 +29,12 @@
         <item name="colorControlNormal">#CCCCCC</item><!--未选中颜色-->
     </style>
 
+
+    <style name="clearButton">
+        <item name="strokeColor">#E5E5E5</item>
+    </style>
+
+    <style name="searchStyle">
+        <item name="android:textSize">8sp</item>
+    </style>
 </resources>
