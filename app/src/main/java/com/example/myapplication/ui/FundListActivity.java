@@ -142,7 +142,7 @@ public class FundListActivity extends AppCompatActivity {
 
                 Constant.selectMode = true;
                 FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-                fragment.updateData();
+                fragment.updateDataMode();
 
                 // 隐藏
                 btnCalculate.setVisibility(View.GONE);
@@ -243,11 +243,8 @@ public class FundListActivity extends AppCompatActivity {
      */
     private void getQueryData(String query,int order) {
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition()+"query:"+query+"order:"+order);
-        // 每一个 fragment 都进行请求
-        for(int i=0;i<fragmentList.size();i++){
-            FundListFragment fragment = (FundListFragment) fragmentList.get(i);
-            fragment.getSearchData(query, order);
-        }
+        FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
+        fragment.getSearchData(query, order);
     }
 
     /**
@@ -384,7 +381,7 @@ public class FundListActivity extends AppCompatActivity {
         // 通知当前 tab进行 刷新
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
         FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-        fragment.updateData();
+        fragment.updateDataMode();
     }
 
     @Override

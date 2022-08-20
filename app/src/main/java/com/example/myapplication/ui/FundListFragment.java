@@ -58,6 +58,8 @@ public class FundListFragment extends Fragment {
         if (getArguments() != null) {
             position = getArguments().getInt(ARG_PARAM1);
         }
+        Log.d(TAG,"onCreate:"+position);
+        initData();
     }
 
     @Override
@@ -65,18 +67,24 @@ public class FundListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fund_list, container, false);
-        initData();
         initView(view);
-        getNextPage();
+        Log.d(TAG,"onCreateView:"+position);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart:"+position);
     }
 
     public void initData(){
         mList = new ArrayList<>();
+        mFundAdapter = new FundAdapter(mList,position);
         }
 
     public void  initView(View view){
-        mFundAdapter = new FundAdapter(mList,position);
+
         rvFund = view.findViewById(R.id.rv_fund);
         rvFund.setAdapter(mFundAdapter);
 
@@ -136,6 +144,8 @@ public class FundListFragment extends Fragment {
         mList.addAll(list);
         mFundAdapter.notifyItemRangeInserted(0, mList.size());
 
+        // todo 解析 totalPages
+        // totalPages
     }
     private String getFundType(){
         if(position == 0){
@@ -181,8 +191,6 @@ public class FundListFragment extends Fragment {
                 }
             });
         }
-
-        // todo 解析 totalPages，并进行比较
         // 判断是否请求完毕
         if(currentPage == totalPages){
             isLastPage = true;
@@ -192,12 +200,32 @@ public class FundListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"onResume:"+position);
+        getSearchData(Constant.content,Constant.order);
+    }
+
+    /**
+     * 刷新数据模式  浏览模式-多选模式
+     */
+    public void  updateDataMode(){
         mFundAdapter.notifyDataSetChanged();
     }
 
-    public void  updateData(){
-        mFundAdapter.notifyDataSetChanged();
+    @Override
+    public void onPause() {
+        Log.d(TAG,"onPause:"+position);
+        super.onPause();
     }
 
+    @Override
+    public void onStop() {
+        Log.d(TAG,"onPause:"+position);
+        super.onStop();
+    }
 
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG,"onDestroyView:"+position);
+        super.onDestroyView();
+    }
 }
