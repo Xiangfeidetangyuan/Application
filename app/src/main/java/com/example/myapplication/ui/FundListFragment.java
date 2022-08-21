@@ -40,6 +40,8 @@ public class FundListFragment extends Fragment {
     private int currentPage = 1;
     private int totalPages = 2 ;
 
+    private boolean isNeedSearch = false;
+
 
     public FundListFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class FundListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fund_list, container, false);
         initView(view);
         Log.d(TAG,"onCreateView:"+position);
+        getSearchData(Constant.content,Constant.order);
         return view;
     }
 
@@ -201,7 +204,12 @@ public class FundListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG,"onResume:"+position);
-        getSearchData(Constant.content,Constant.order);
+        if(isNeedSearch){
+            getSearchData(Constant.content,Constant.order);
+        }else{
+            mFundAdapter.notifyDataSetChanged();
+        }
+        //getSearchData(Constant.content,Constant.order);
     }
 
     /**
@@ -213,6 +221,7 @@ public class FundListFragment extends Fragment {
 
     @Override
     public void onPause() {
+        setNeedSearch(false);
         Log.d(TAG,"onPause:"+position);
         super.onPause();
     }
@@ -227,5 +236,9 @@ public class FundListFragment extends Fragment {
     public void onDestroyView() {
         Log.d(TAG,"onDestroyView:"+position);
         super.onDestroyView();
+    }
+
+    public void setNeedSearch(boolean needSearch) {
+        isNeedSearch = needSearch;
     }
 }

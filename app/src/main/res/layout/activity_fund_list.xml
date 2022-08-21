@@ -45,13 +45,13 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
+            style="@style/searchStyle"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_marginTop="@dimen/px_6"
-            android:layout_marginBottom="@dimen/px_6"
             android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginTop="@dimen/px_6"
             android:layout_marginRight="@dimen/px_12"
-            style="@style/searchStyle"
+            android:layout_marginBottom="@dimen/px_6"
             android:background="@drawable/bg_searchview"
             app:defaultQueryHint="Please search by product name or code"
             app:iconifiedByDefault="false"

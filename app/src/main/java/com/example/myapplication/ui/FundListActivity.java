@@ -45,6 +45,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * @author zhuangyuan.ji
+ */
 public class FundListActivity extends AppCompatActivity {
     private static final String TAG = FundListActivity.class.getSimpleName();
     private ViewPager2 viewPager2;
@@ -243,8 +247,14 @@ public class FundListActivity extends AppCompatActivity {
      */
     private void getQueryData(String query,int order) {
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition()+"query:"+query+"order:"+order);
-        FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-        fragment.getSearchData(query, order);
+        FundListFragment curFragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
+        curFragment.getSearchData(query, order);
+
+        for (int i = 0; i < fragmentList.size(); i++) {
+            FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+            fragment.setNeedSearch(true);
+        }
+
     }
 
     /**
@@ -253,7 +263,6 @@ public class FundListActivity extends AppCompatActivity {
      * @param position tab position
      */
     private void updateUpTabBadge(boolean isIncrease,int position){
-
         BadgeDrawable drawable = Objects.requireNonNull(tabLayout.getTabAt(position)).getBadge();
         if(drawable != null){
             int cur;
@@ -378,6 +387,7 @@ public class FundListActivity extends AppCompatActivity {
             }
         }
         tvFundListSelectNum.setText("0");
+        btnConfirm.setEnabled(false);
         // 通知当前 tab进行 刷新
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
         FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
