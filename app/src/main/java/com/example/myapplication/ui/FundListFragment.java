@@ -25,13 +25,15 @@ import java.util.List;
 public class FundListFragment extends Fragment {
 
     private static final String TAG = FundListFragment.class.getSimpleName();
-    RecyclerView rvFund;
+    private RecyclerView rvFund;
    private LinearLayoutManager mLinearLayoutManager;
+
    private FundAdapter mFundAdapter;
    private List<Fund> mList;
 
     // 标识 要接收 的参数
     private static final String ARG_PARAM1 = "param1";
+
    // 第几个Tab
    private int position;
 
@@ -40,7 +42,13 @@ public class FundListFragment extends Fragment {
     private int currentPage = 1;
     private int totalPages = 2 ;
 
-    private boolean isNeedSearch = false;
+    private boolean isNeedSearch;
+    private boolean selectMode =false;
+    private boolean isNeedUpdateSelectMode = false;
+
+
+    private String content = "";
+    private int order = 0;
 
 
     public FundListFragment() {
@@ -64,6 +72,18 @@ public class FundListFragment extends Fragment {
         initData();
     }
 
+    public void initData(){
+        mList = new ArrayList<>();
+        mFundAdapter = new FundAdapter(mList,position);
+        mFundAdapter.setFundAdapterListener(new FundAdapter.FundAdapterListener() {
+            @Override
+            public boolean getSelectMode() {
+                return selectMode;
+            }
+        });
+        isNeedSearch = false;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,20 +91,9 @@ public class FundListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fund_list, container, false);
         initView(view);
         Log.d(TAG,"onCreateView:"+position);
-        getSearchData(Constant.content,Constant.order);
+        getSearchData(content,order);
         return view;
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG,"onStart:"+position);
-    }
-
-    public void initData(){
-        mList = new ArrayList<>();
-        mFundAdapter = new FundAdapter(mList,position);
-        }
 
     public void  initView(View view){
 
@@ -119,11 +128,13 @@ public class FundListFragment extends Fragment {
     public void getSearchData(String content,int order){
         currentPage = 1;
         isLastPage = false;
+        this.content = content;
+        this.order = order;
         // 请求数据  content、fundType、order、pageNum、pageSize = 10
         String fundType = getFundType();
         int pageNum = currentPage;
-        int pageSize = 10;
-        Log.d(TAG,"pos:"+position+" getSearchDate： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
+        int pageSize = 15;
+        Log.d(TAG,"pos:"+position+" getSearchData： content: "+ content+ " fundType: "+ fundType +" order: " +order +" pageNum :"+pageNum + " isNeedSearch "+isNeedSearch);
 
         // todo 网络调用
         List<Fund> list = new ArrayList<>();
@@ -165,8 +176,6 @@ public class FundListFragment extends Fragment {
         // 请求数据  content、fundType、order、pageNum、pageSize = 7
         String fundType = getFundType();
         int pageNum = currentPage;
-        String content = Constant.content;
-        int order = Constant.order;
         Log.d(TAG,"pos:"+position+" getNextPage： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
         // todo 网络调用
         List<Fund> list = new ArrayList<>();
@@ -182,22 +191,23 @@ public class FundListFragment extends Fragment {
         list.add(new Fund("91","sda","Money","23"));
         int oldSize = mList.size();
         mList.addAll(list);
-        if(oldSize ==0){
-
-        }else{
-            rvFund.post(new Runnable() {
-                @Override
-                public void run() {
-                    // todo 注意数据的起始位置
-                    mFundAdapter.notifyItemRangeInserted(oldSize,list.size());
-                    //mFundAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+        rvFund.post(new Runnable() {
+            @Override
+            public void run() {
+                // todo 注意数据的起始位置
+                mFundAdapter.notifyItemRangeInserted(oldSize,list.size());
+                //mFundAdapter.notifyDataSetChanged();
+            }
+        });
         // 判断是否请求完毕
         if(currentPage == totalPages){
             isLastPage = true;
         }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart:"+position);
     }
 
     @Override
@@ -205,11 +215,10 @@ public class FundListFragment extends Fragment {
         super.onResume();
         Log.d(TAG,"onResume:"+position);
         if(isNeedSearch){
-            getSearchData(Constant.content,Constant.order);
-        }else{
+            getSearchData(content,order);
+        }else if (isNeedUpdateSelectMode){
             mFundAdapter.notifyDataSetChanged();
         }
-        //getSearchData(Constant.content,Constant.order);
     }
 
     /**
@@ -221,7 +230,8 @@ public class FundListFragment extends Fragment {
 
     @Override
     public void onPause() {
-        setNeedSearch(false);
+        // 取消更新
+        setNeedSearch(false,content,order);
         Log.d(TAG,"onPause:"+position);
         super.onPause();
     }
@@ -238,7 +248,23 @@ public class FundListFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void setNeedSearch(boolean needSearch) {
-        isNeedSearch = needSearch;
+    public void setNeedSearch(boolean needSearch,String content,int order) {
+        if(!needSearch){
+            isNeedSearch = false;
+            return;
+        }
+        if(content.equals(this.content) && this.order == order){
+           // 搜索条件 不变，不用更新
+            isNeedSearch = false;
+        }else{
+            isNeedSearch = true;
+            this.content = content;
+            this.order = order;
+        }
+    }
+
+    public void setSelectMode(boolean selectMode) {
+        this.selectMode = selectMode;
+        isNeedUpdateSelectMode = true;
     }
 }

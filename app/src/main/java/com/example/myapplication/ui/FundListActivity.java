@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -58,22 +59,21 @@ public class FundListActivity extends AppCompatActivity {
     private Button btnClear;
     private Button btnConfirm;
     private SearchView searchView;
+    private EditText etSearchView;
     private ImageView ivFundListBack;
     private ImageView ivFundListMyHoldings;
-
-    private List<String> tabTitleList;
-    private List<Fragment> fragmentList;
-
     // 选择基金 提示
     private RelativeLayout rvFundListSelectTool;
 
     // 选择 基金的个数
     private TextView tvFundListSelectNum;
 
-    private EditText etSearchView;
-
     private Spinner spinnerFundList;
 
+    private List<String> tabTitleList;
+    private List<Fragment> fragmentList;
+
+    private boolean selectMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +97,8 @@ public class FundListActivity extends AppCompatActivity {
         tabTitleList.add("Money");
         tabTitleList.add("Bond");
         tabTitleList.add("Blend");
-    }
 
-    private void initView(){
-        viewPager2 = findViewById(R.id.viewPager2);
-        tabLayout =  findViewById(R.id.tabLayout);
+        selectMode = false;
 
         FragmentManager fm = getSupportFragmentManager();
         fragmentList = new ArrayList<>();
@@ -109,6 +106,12 @@ public class FundListActivity extends AppCompatActivity {
             fragmentList.add(FundListFragment.newInstance(i));
         }
         tabAdapter = new TabAdapter(fm, getLifecycle(),fragmentList);
+    }
+
+    private void initView(){
+        viewPager2 = findViewById(R.id.viewPager2);
+        tabLayout =  findViewById(R.id.tabLayout);
+
         viewPager2.setAdapter(tabAdapter);
         // 设置禁止滑动
         viewPager2.setUserInputEnabled(false);
@@ -142,12 +145,16 @@ public class FundListActivity extends AppCompatActivity {
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectMode = true;
                 Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
 
-                Constant.selectMode = true;
-                FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-                fragment.updateDataMode();
-
+                for (int i = 0; i < fragmentList.size() ; i++) {
+                    FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+                    fragment.setSelectMode(true);
+                    if(i == tabLayout.getSelectedTabPosition()){
+                        fragment.updateDataMode();
+                    }
+                }
                 // 隐藏
                 btnCalculate.setVisibility(View.GONE);
                 btnClear.setVisibility(VISIBLE);
@@ -181,17 +188,29 @@ public class FundListActivity extends AppCompatActivity {
         tvFundListSelectNum = findViewById(R.id.tv_fundList_selectNum);
 
         searchView = findViewById(R.id.searchView);
+        searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etSearchView.setText("");
+                Log.d(TAG,"searchView close");
+                getQueryData("0",getOrder());
+                searchView.clearFocus();
+            }
+        });
         etSearchView = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         etSearchView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        // 设置 输入最大长度
+        etSearchView.setFilters(new InputFilter.LengthFilter[]{new InputFilter.LengthFilter(31)});
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //文字提交的时候哦回调，newText是最后提交搜索的文字
                 Log.d(TAG,"query:"+query);
-                Constant.content = query;
-                // todo 发起请求
+                // 发起请求
                 getQueryData(query,getOrder());
-                return false;
+                // 防止触发两次
+                searchView.clearFocus();
+                return true;
             }
 
             @Override
@@ -200,7 +219,6 @@ public class FundListActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         ivFundListBack = findViewById(R.id.iv_fundList_back);
         ivFundListBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +242,6 @@ public class FundListActivity extends AppCompatActivity {
         spinnerFundList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Constant.order = position;
                 getQueryData(getQuery(),position);
             }
 
@@ -247,12 +264,15 @@ public class FundListActivity extends AppCompatActivity {
      */
     private void getQueryData(String query,int order) {
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition()+"query:"+query+"order:"+order);
-        FundListFragment curFragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-        curFragment.getSearchData(query, order);
 
         for (int i = 0; i < fragmentList.size(); i++) {
             FundListFragment fragment = (FundListFragment) fragmentList.get(i);
-            fragment.setNeedSearch(true);
+            if(i == tabLayout.getSelectedTabPosition()){
+                // 当前需要 搜索、更新
+                fragment.getSearchData(query,order);
+            }else{
+                fragment.setNeedSearch(true,query,order);
+            }
         }
 
     }
@@ -388,7 +408,6 @@ public class FundListActivity extends AppCompatActivity {
         }
         tvFundListSelectNum.setText("0");
         btnConfirm.setEnabled(false);
-        // 通知当前 tab进行 刷新
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
         FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
         fragment.updateDataMode();
@@ -396,7 +415,7 @@ public class FundListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(Constant.selectMode){
+        if(selectMode){
             // 弹窗提醒
             // todo 封装Dialog
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -405,9 +424,14 @@ public class FundListActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // 清除
-                            Constant.selectMode = false;
                             Constant.fundIdAndNameSet.clear();
                             clearSelectedItem();
+                            selectMode = false;
+                            for(int i=0;i< fragmentList.size();i++){
+                                // 通知当前 tab进行 刷新
+                                FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+                                fragment.setSelectMode(false);
+                            }
                             rvFundListSelectTool.setVisibility(INVISIBLE);
                             btnConfirm.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);

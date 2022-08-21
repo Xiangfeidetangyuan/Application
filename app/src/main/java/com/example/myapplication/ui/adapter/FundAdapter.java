@@ -31,6 +31,8 @@ public class FundAdapter extends RecyclerView.Adapter  {
     private List<Fund> mList;
     private int fragmentPosition;
 
+    private boolean selectMode;
+
 
     public FundAdapter(List<Fund> list,int position) {
         this.mList = list;
@@ -68,7 +70,8 @@ public class FundAdapter extends RecyclerView.Adapter  {
         viewHolder.tvFundListFundIdAndName.setText(fundIdAndName);
 
        Set<String> fundIdAndNameSet = Constant.fundIdAndNameSet;
-        if(Constant.selectMode){
+       selectMode = fundAdapterListener.getSelectMode();
+        if(selectMode){
             viewHolder.checkBoxFundList.setVisibility(View.VISIBLE);
         }else {
             viewHolder.checkBoxFundList.setVisibility(View.GONE);
@@ -136,5 +139,14 @@ public class FundAdapter extends RecyclerView.Adapter  {
             tvFundListFundType= itemView.findViewById(R.id.tv_fundList_fundType);
             ivFundListRight = itemView.findViewById(R.id.iv_fundList_right);
         }
+    }
+
+    FundAdapterListener fundAdapterListener;
+    public interface FundAdapterListener{
+        boolean getSelectMode();
+    }
+
+    public void setFundAdapterListener(FundAdapterListener fundAdapterListener) {
+        this.fundAdapterListener = fundAdapterListener;
     }
 }
