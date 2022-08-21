@@ -271,7 +271,7 @@ public class FundListActivity extends AppCompatActivity {
                 // 当前需要 搜索、更新
                 fragment.getSearchData(query,order);
             }else{
-                fragment.setNeedSearch(true,query,order);
+                fragment.setNeedSearch(query,order);
             }
         }
 

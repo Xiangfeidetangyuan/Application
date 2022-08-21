@@ -160,6 +160,8 @@ public class FundListFragment extends Fragment {
 
         // todo 解析 totalPages
         // totalPages
+        // 取消更新
+        isNeedSearch = false;
     }
     private String getFundType(){
         if(position == 0){
@@ -230,8 +232,6 @@ public class FundListFragment extends Fragment {
 
     @Override
     public void onPause() {
-        // 取消更新
-        setNeedSearch(false,content,order);
         Log.d(TAG,"onPause:"+position);
         super.onPause();
     }
@@ -248,11 +248,7 @@ public class FundListFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void setNeedSearch(boolean needSearch,String content,int order) {
-        if(!needSearch){
-            isNeedSearch = false;
-            return;
-        }
+    public void setNeedSearch(String content,int order) {
         if(content.equals(this.content) && this.order == order){
            // 搜索条件 不变，不用更新
             isNeedSearch = false;
