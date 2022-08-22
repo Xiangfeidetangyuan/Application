@@ -155,6 +155,7 @@ public class FundListActivity extends AppCompatActivity {
                     fragment.updateDataMode();
                 }
                 // 隐藏
+                ivFundListBack.setVisibility(VISIBLE);
                 btnCalculate.setVisibility(View.GONE);
                 btnClear.setVisibility(VISIBLE);
                 btnConfirm.setVisibility(VISIBLE);
@@ -479,6 +480,7 @@ public class FundListActivity extends AppCompatActivity {
                                 fragment.setSelectMode(false);
                                 fragment.updateDataMode();
                             }
+                            ivFundListBack.setVisibility(View.GONE);
                             rvFundListSelectTool.setVisibility(INVISIBLE);
                             btnConfirm.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
