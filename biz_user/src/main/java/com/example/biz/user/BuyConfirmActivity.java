@@ -111,8 +111,15 @@ public class BuyConfirmActivity extends AppCompatActivity {
                 ", if it is not a trading day, it will be postponed.");
         tvBuyConfirmNextInvest.setText(Html.fromHtml(nextInvest));
 
+        // 解析参数  fundId、fundName、
+        boolean isInvest = false;
         rvBuyConfirmInvest = findViewById(R.id.rv_buy_confirm_invest);
-        rvBuyConfirmInvest.setVisibility(View.VISIBLE);
+        if(isInvest){
+            rvBuyConfirmInvest.setVisibility(View.VISIBLE);
+        }else{
+            rvBuyConfirmInvest.setVisibility(View.GONE);
+        }
+
     }
 
 }

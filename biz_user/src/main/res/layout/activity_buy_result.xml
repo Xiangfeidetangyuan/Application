@@ -21,13 +21,15 @@
        android:layout_marginTop="18dp"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
+
    <ImageView
-       android:layout_marginTop="@dimen/dp_40"
-       android:layout_below="@id/tv_buy_result"
+       android:id="@+id/iv_buy_result_process"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       android:layout_below="@id/tv_buy_result"
+       android:layout_marginTop="@dimen/dp_40"
        android:scaleType="centerInside"
-       android:src="@drawable/buy_process"/>
+       android:src="@drawable/buy_process" />
 
    <LinearLayout
        android:layout_width="match_parent"
