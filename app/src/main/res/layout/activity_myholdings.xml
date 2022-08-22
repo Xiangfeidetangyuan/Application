@@ -5,9 +5,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MyHoldingsActivity">
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/lv_myholdings_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="xxxx"/>
+        android:background="#3874F6"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_10"
+            android:layout_marginBottom="@dimen/px_10">
+
+            <ImageView
+                android:id="@+id/iv_myholdings_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/px_6"
+                android:src="@drawable/back_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="My Fund"
+                android:textColor="#FAFFFB"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="Total Amount (SGD)"
+            android:textColor="#FAFFFB"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_myholdings_total_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="#FAFFFB"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Yesterday Earning(SGD)"
+                android:textColor="#FAFFFB" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Total Earning(SGD)"
+                android:textColor="#FAFFFB" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="33dp">
+
+            <TextView
+                android:id="@+id/tv_myholdings_yesterday_earning"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#FAFFFB" />
+
+            <TextView
+                android:id="@+id/tv_myholdings_total_earning"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#FAFFFB" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_myholdings_show_myholdings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lv_myholdings_top"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="@dimen/dp_12"
+        android:text="My Holdings"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:id="@+id/rv_myholdings_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_myholdings_show_myholdings"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="@dimen/dp_12">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="Fund"
+            android:textColor="#9E9E9E"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_40"
+            android:layout_toLeftOf="@id/tv_myholdings_show_earnings_yields"
+            android:text="        Amount\nYesterday Earnings"
+            android:textColor="#9E9E9E"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_myholdings_show_earnings_yields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_6"
+            android:text="Earnings\n   Yields"
+            android:textColor="#9E9E9E"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_myholdings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rv_myholdings_titlebar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_20" />
 
 </RelativeLayout>

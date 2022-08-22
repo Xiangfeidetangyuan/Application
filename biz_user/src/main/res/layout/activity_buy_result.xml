@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BuyResultActivity">
+
+   <ImageView
+       android:id="@+id/iv_buy_result"
+       android:layout_marginTop="23dp"
+       android:layout_centerHorizontal="true"
+       android:layout_width="60dp"
+       android:layout_height="60dp"
+       android:src="@drawable/fail"/>
+
+   <TextView
+       android:id="@+id/tv_buy_result"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@id/iv_buy_result"
+       android:layout_marginTop="18dp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"/>
+   <ImageView
+       android:layout_marginTop="@dimen/dp_40"
+       android:layout_below="@id/tv_buy_result"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:scaleType="centerInside"
+       android:src="@drawable/buy_process"/>
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:layout_marginBottom="@dimen/dp_40"
+       android:layout_marginLeft="@dimen/dp_12"
+       android:layout_marginRight="@dimen/dp_12">
+      <Button
+          android:id="@+id/btn_buy_result_myholdings"
+          android:text="My Holdings"
+          android:textAllCaps="false"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:backgroundTint="@color/white"
+          style="@style/clearButton"
+          android:textColor="#333333"
+          android:layout_height="wrap_content"/>
+
+      <Button
+          android:id="@+id/btn_buy_result_exit"
+          android:textAllCaps="false"
+          android:layout_marginLeft="@dimen/dp_12"
+          android:layout_width="0dp"
+          android:backgroundTint="@color/blue"
+          android:layout_weight="1"
+          android:textColor="@color/white"
+          android:layout_height="wrap_content"/>
+
+   </LinearLayout>
+
+</RelativeLayout>

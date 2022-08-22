@@ -82,6 +82,10 @@ public class BuyConfirmActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(checkBoxBuyConfirm.isChecked()){
                     // 请求流水号  -> 支付
+
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(),BuyResultActivity.class);
+                    startActivity(intent);
                 }else{
                     // 提醒
                 }

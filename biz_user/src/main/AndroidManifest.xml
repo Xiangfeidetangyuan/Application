@@ -2,11 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.biz.user">
 
-    <application>
+    <application >
+        <activity
+            android:name=".BuyResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.lib.user"/>
         <activity
             android:name=".BuyConfirmActivity"
             android:exported="true"
-            android:theme="@style/Theme.lib.user"/>
+            android:theme="@style/Theme.lib.user"
+             />
     </application>
 
 </manifest>

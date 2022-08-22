@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_height="66dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tv_item_holdings_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@id/tv_item_holdings_amount"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_item_holdings_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="86dp"
+            android:layout_toLeftOf="@id/tv_item_holdings_earnings"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_item_holdings_yesterday_earnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_item_holdings_amount"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="86dp"
+            android:layout_toLeftOf="@id/tv_item_holdings_earnings"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_item_holdings_earnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_6"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_item_holdings_earnings_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_item_holdings_amount"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_6"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</RelativeLayout>
