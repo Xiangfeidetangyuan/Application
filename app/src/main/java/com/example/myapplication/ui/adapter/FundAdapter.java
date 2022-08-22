@@ -83,12 +83,11 @@ public class FundAdapter extends RecyclerView.Adapter  {
                 if(!buttonView.isPressed()){
                     return;
                 }
-                Log.d(TAG,position+"isChanged");
                 if(fundIdAndNameSet.contains(fundIdAndName)){
                     // 如果 包含，则撤销
                     fundIdAndNameSet.remove(fundIdAndName);
                     // 更新角标
-                    EventBus.getDefault().post(new Event(false,fund));
+                    EventBus.getDefault().post(new Event(false,fund,fragmentPosition));
                 }else {
                     // 如果不包含 ，则添加
                     // 添加前先进行数量校验
@@ -97,7 +96,7 @@ public class FundAdapter extends RecyclerView.Adapter  {
                         viewHolder.checkBoxFundList.setChecked(false);
                     }else{
                         fundIdAndNameSet.add(fundIdAndName);
-                        EventBus.getDefault().post(new Event(true,fund));
+                        EventBus.getDefault().post(new Event(true,fund,fragmentPosition));
                     }
                 }
                 // todo 不要直接刷新数据，可以外部调用刷新数据

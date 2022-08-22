@@ -3,7 +3,9 @@ package com.example.myapplication.ui;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +35,7 @@ import android.widget.Toast;
 import com.example.biz.user.BuyConfirmActivity;
 import com.example.myapplication.Constant;
 import com.example.myapplication.R;
+import com.example.myapplication.bean.Fund;
 import com.example.myapplication.ui.adapter.TabAdapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -75,6 +78,8 @@ public class FundListActivity extends AppCompatActivity {
 
     private boolean selectMode;
 
+    private int pageSize=30;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +88,8 @@ public class FundListActivity extends AppCompatActivity {
         initData();
         initView();
         setUpTabBadge();
-
-//        //设置状态栏透明
-//        makeStatusBarTransparent(this);
-//        //状态栏文字自适应
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
+        getInitData();
     }
-
     private void initData() {
         tabTitleList = new ArrayList<>();
         tabTitleList.add("All");
@@ -115,6 +114,8 @@ public class FundListActivity extends AppCompatActivity {
         viewPager2.setAdapter(tabAdapter);
         // 设置禁止滑动
         viewPager2.setUserInputEnabled(false);
+        // 设置离屏加载
+        viewPager2.setOffscreenPageLimit(3);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -151,9 +152,7 @@ public class FundListActivity extends AppCompatActivity {
                 for (int i = 0; i < fragmentList.size() ; i++) {
                     FundListFragment fragment = (FundListFragment) fragmentList.get(i);
                     fragment.setSelectMode(true);
-                    if(i == tabLayout.getSelectedTabPosition()){
-                        fragment.updateDataMode();
-                    }
+                    fragment.updateDataMode();
                 }
                 // 隐藏
                 btnCalculate.setVisibility(View.GONE);
@@ -277,6 +276,7 @@ public class FundListActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * 更新 角标状态
      * @param isIncrease 是否为增加
@@ -333,27 +333,63 @@ public class FundListActivity extends AppCompatActivity {
         }
     }
 
-    // 设置 透明 状态栏
-    public static void makeStatusBarTransparent(Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return;
-        }
-        Window window = activity.getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int option = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(option);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG,"onStart activity");
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG,"onResume activity");
+        super.onResume();
+    }
+
+    /**
+     *  首次 获取数据
+     */
+    private void getInitData() {
+        // 请求数据  content、fundType、order、pageNum、pageSize
+        String content = "";
+        String fundType = "ALL";
+        int order = 0;
+        int pageNum =0 ;
+        Log.d(TAG,"getFirstPage： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
+        // todo 网络调用
+        List<Fund> list = new ArrayList<>();
+        list.add(new Fund("MO","sda","Money","23"));
+        list.add(new Fund("YU","sda","Money","23"));
+        list.add(new Fund("PJ","sda","Blend","23"));
+        list.add(new Fund("IJ","sda","Bond","23"));
+        list.add(new Fund("UH","sda","Money","23"));
+        list.add(new Fund("HN","sda","Bond","23"));
+        list.add(new Fund("UJ","sda","Blend","23"));
+        list.add(new Fund("HJ","sda","Money","23"));
+        list.add(new Fund("YU","sda","Money","23"));
+        list.add(new Fund("OK","sda","Money","23"));
+        list.add(new Fund("PL","sda","Money","23"));
+        list.add(new Fund("YU","sda","Money","23"));
+        list.add(new Fund("YU","sda","Blend","23"));
+        list.add(new Fund("UJ","sda","Bond","23"));
+
+        // 进行过滤
+        List<Fund> allList = list;
+        List<Fund> moneyList = new ArrayList<>();
+        List<Fund> bondList = new ArrayList<>();
+        List<Fund> blendList = new ArrayList<>();
+        for ( Fund fund: list) {
+            switch (fund.getFundType()){
+                case "Money":  moneyList.add(fund); break;
+                case "Bond": bondList.add(fund); break;
+                case "Blend": blendList.add(fund);break;
+                default: break;
+            }
+        }
+        ((FundListFragment) fragmentList.get(0)).addData(allList);
+        ((FundListFragment) fragmentList.get(1)).addData(moneyList);
+        ((FundListFragment) fragmentList.get(2)).addData(bondList);
+        ((FundListFragment) fragmentList.get(3)).addData(blendList);
     }
 
     @Override
@@ -385,6 +421,14 @@ public class FundListActivity extends AppCompatActivity {
           // 更新 all
           updateUpTabBadge(event.isIncrease,0);
           updateUpTabBadge(event.isIncrease,pos);
+          // 通知对应 fragment进行更新
+          if(pos == event.fragmentPosition){
+              // 是子tab点击 通知all 更新
+              ((FundListFragment)fragmentList.get(0)).updateDataMode();
+          }else {
+              // 通知子tab更新
+              ((FundListFragment)fragmentList.get(pos)).updateDataMode();
+          }
       }
     }
 
@@ -408,9 +452,11 @@ public class FundListActivity extends AppCompatActivity {
         }
         tvFundListSelectNum.setText("0");
         btnConfirm.setEnabled(false);
-        Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition());
-        FundListFragment fragment = (FundListFragment) fragmentList.get(tabLayout.getSelectedTabPosition());
-        fragment.updateDataMode();
+        for(int i=0;i< fragmentList.size();i++){
+            // 通知当前 tab进行 刷新
+            FundListFragment fragment = (FundListFragment) fragmentList.get(i);
+            fragment.updateDataMode();
+        }
     }
 
     @Override
@@ -431,6 +477,7 @@ public class FundListActivity extends AppCompatActivity {
                                 // 通知当前 tab进行 刷新
                                 FundListFragment fragment = (FundListFragment) fragmentList.get(i);
                                 fragment.setSelectMode(false);
+                                fragment.updateDataMode();
                             }
                             rvFundListSelectTool.setVisibility(INVISIBLE);
                             btnConfirm.setVisibility(View.GONE);

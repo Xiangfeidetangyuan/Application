@@ -87,6 +87,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/rv_bottom"
         android:layout_below="@id/spinner_fundList"
+        android:layout_marginBottom="@dimen/dp_6"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <RelativeLayout

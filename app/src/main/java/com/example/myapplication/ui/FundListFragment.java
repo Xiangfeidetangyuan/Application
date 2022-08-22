@@ -49,10 +49,12 @@ public class FundListFragment extends Fragment {
 
     private String content = "";
     private int order = 0;
+    private int pageSize = 30;
 
 
     public FundListFragment() {
         // Required empty public constructor
+        mList = new ArrayList<>();
     }
 
     public static FundListFragment newInstance(int position) {
@@ -73,7 +75,6 @@ public class FundListFragment extends Fragment {
     }
 
     public void initData(){
-        mList = new ArrayList<>();
         mFundAdapter = new FundAdapter(mList,position);
         mFundAdapter.setFundAdapterListener(new FundAdapter.FundAdapterListener() {
             @Override
@@ -91,7 +92,6 @@ public class FundListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fund_list, container, false);
         initView(view);
         Log.d(TAG,"onCreateView:"+position);
-        getSearchData(content,order);
         return view;
     }
 
@@ -123,6 +123,8 @@ public class FundListFragment extends Fragment {
             }
 
         });
+        // 禁用缓存
+        rvFund.getRecycledViewPool().setMaxRecycledViews(0,0);
     }
 
     public void getSearchData(String content,int order){
@@ -130,7 +132,7 @@ public class FundListFragment extends Fragment {
         isLastPage = false;
         this.content = content;
         this.order = order;
-        // 请求数据  content、fundType、order、pageNum、pageSize = 10
+        // 请求数据  content、fundType、order、pageNum、pageSize
         String fundType = getFundType();
         int pageNum = currentPage;
         int pageSize = 15;
@@ -175,7 +177,7 @@ public class FundListFragment extends Fragment {
     }
 
     private void getNextPage() {
-        // 请求数据  content、fundType、order、pageNum、pageSize = 7
+        // 请求数据  content、fundType、order、pageNum、pageSize
         String fundType = getFundType();
         int pageNum = currentPage;
         Log.d(TAG,"pos:"+position+" getNextPage： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
@@ -215,12 +217,10 @@ public class FundListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume:"+position);
         if(isNeedSearch){
             getSearchData(content,order);
-        }else if (isNeedUpdateSelectMode){
-            mFundAdapter.notifyDataSetChanged();
         }
+        Log.d(TAG,"onResume:"+position);
     }
 
     /**
@@ -241,6 +241,10 @@ public class FundListFragment extends Fragment {
         Log.d(TAG,"onPause:"+position);
         super.onStop();
     }
+    // 向私有list添加数据
+    public void addData(List<Fund> list){
+        mList.addAll(list);
+    }
 
     @Override
     public void onDestroyView() {
@@ -257,6 +261,7 @@ public class FundListFragment extends Fragment {
             this.content = content;
             this.order = order;
         }
+        Log.d(TAG,"pos:"+position+"isNeedSearch:"+isNeedSearch);
     }
 
     public void setSelectMode(boolean selectMode) {
