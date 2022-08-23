@@ -38,13 +38,11 @@ public class FundListFragment extends Fragment {
    private int position;
 
 
-    private boolean isLastPage = false;
+    private boolean isLastPage;
     private int currentPage = 1;
     private int totalPages = 2 ;
 
-    private boolean isNeedSearch;
     private boolean selectMode =false;
-    private boolean isNeedUpdateSelectMode = false;
 
 
     private String content = "";
@@ -82,7 +80,7 @@ public class FundListFragment extends Fragment {
                 return selectMode;
             }
         });
-        isNeedSearch = false;
+        isLastPage = false;
     }
 
     @Override
@@ -113,7 +111,6 @@ public class FundListFragment extends Fragment {
         rvFund.addOnScrollListener(new RecyclerViewScrollListener(mLinearLayoutManager) {
             @Override
             protected void loadMoreItems() {
-               currentPage++;
                getNextPage();
             }
 
@@ -127,44 +124,6 @@ public class FundListFragment extends Fragment {
         rvFund.getRecycledViewPool().setMaxRecycledViews(0,0);
     }
 
-    public void getSearchData(String content,int order){
-        currentPage = 1;
-        isLastPage = false;
-        this.content = content;
-        this.order = order;
-        // 请求数据  content、fundType、order、pageNum、pageSize
-        String fundType = getFundType();
-        int pageNum = currentPage;
-        int pageSize = 15;
-        Log.d(TAG,"pos:"+position+" getSearchData： content: "+ content+ " fundType: "+ fundType +" order: " +order +" pageNum :"+pageNum + " isNeedSearch "+isNeedSearch);
-
-        // todo 网络调用
-        List<Fund> list = new ArrayList<>();
-        list.add(new Fund("sf","sda","Money","23"));
-        list.add(new Fund("we","sda","Money","23"));
-        list.add(new Fund("ke","sda","Money","23"));
-        list.add(new Fund("vg","sda","Money","23"));
-        list.add(new Fund("hy","sda","Money","23"));
-        list.add(new Fund("in","sda","Money","23"));
-        list.add(new Fund("gh","sda","Money","23"));
-        list.add(new Fund("ry","sda","Money","23"));
-        list.add(new Fund("vr","sda","Money","23"));
-        list.add(new Fund("rt","sda","Money","23"));
-
-        int oldSize = mList.size();
-        // 清除之前数据
-        if(mList.size() >0 ){
-            mList.clear();
-            mFundAdapter.notifyItemRangeRemoved(0,oldSize);
-        }
-        mList.addAll(list);
-        mFundAdapter.notifyItemRangeInserted(0, mList.size());
-
-        // todo 解析 totalPages
-        // totalPages
-        // 取消更新
-        isNeedSearch = false;
-    }
     private String getFundType(){
         if(position == 0){
             return "ALL";
@@ -176,7 +135,14 @@ public class FundListFragment extends Fragment {
         return "BLEND";
     }
 
+    // 设置搜索条件
+    public void setSearchCondition(String content,int order){
+        this.content = content;
+        this.order = order;
+    }
+
     private void getNextPage() {
+        currentPage++;
         // 请求数据  content、fundType、order、pageNum、pageSize
         String fundType = getFundType();
         int pageNum = currentPage;
@@ -204,7 +170,7 @@ public class FundListFragment extends Fragment {
             }
         });
         // 判断是否请求完毕
-        if(currentPage == totalPages){
+        if(currentPage >= totalPages){
             isLastPage = true;
         }
     }
@@ -217,9 +183,6 @@ public class FundListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(isNeedSearch){
-            getSearchData(content,order);
-        }
         Log.d(TAG,"onResume:"+position);
     }
 
@@ -243,7 +206,9 @@ public class FundListFragment extends Fragment {
     }
     // 向私有list添加数据
     public void addData(List<Fund> list){
+        mList.clear();
         mList.addAll(list);
+        isLastPage = false;
     }
 
     @Override
@@ -252,20 +217,7 @@ public class FundListFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void setNeedSearch(String content,int order) {
-        if(content.equals(this.content) && this.order == order){
-           // 搜索条件 不变，不用更新
-            isNeedSearch = false;
-        }else{
-            isNeedSearch = true;
-            this.content = content;
-            this.order = order;
-        }
-        Log.d(TAG,"pos:"+position+"isNeedSearch:"+isNeedSearch);
-    }
-
     public void setSelectMode(boolean selectMode) {
         this.selectMode = selectMode;
-        isNeedUpdateSelectMode = true;
     }
 }

@@ -120,7 +120,7 @@ public class FundListActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem(tab.getPosition());
+                viewPager2.setCurrentItem(tab.getPosition(),false);
             }
 
             @Override
@@ -264,17 +264,14 @@ public class FundListActivity extends AppCompatActivity {
      */
     private void getQueryData(String query,int order) {
         Log.d(TAG,"当前Tab："+ tabLayout.getSelectedTabPosition()+"query:"+query+"order:"+order);
-
+        // 回到首页
+        viewPager2.setCurrentItem(0,false);
+        getSearchData(query,order);
         for (int i = 0; i < fragmentList.size(); i++) {
             FundListFragment fragment = (FundListFragment) fragmentList.get(i);
-            if(i == tabLayout.getSelectedTabPosition()){
-                // 当前需要 搜索、更新
-                fragment.getSearchData(query,order);
-            }else{
-                fragment.setNeedSearch(query,order);
-            }
+            fragment.setSearchCondition(query,order);
+            fragment.updateDataMode();
         }
-
     }
 
 
@@ -355,7 +352,7 @@ public class FundListActivity extends AppCompatActivity {
         String content = "";
         String fundType = "ALL";
         int order = 0;
-        int pageNum =0 ;
+        int pageNum =1 ;
         Log.d(TAG,"getFirstPage： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
         // todo 网络调用
         List<Fund> list = new ArrayList<>();
@@ -393,6 +390,49 @@ public class FundListActivity extends AppCompatActivity {
         ((FundListFragment) fragmentList.get(3)).addData(blendList);
     }
 
+    /**
+     *todo 自测  获取搜索数据
+     */
+    private void getSearchData(String content,int order) {
+        String fundType = "All";
+        // 请求数据  content、fundType、order、pageNum、pageSize
+        int pageNum =1 ;
+        Log.d(TAG,"getFirstPage： content:"+ content+ " fundType: "+ fundType +" order: " +order +"pageNum:"+pageNum);
+        // todo 网络调用
+        List<Fund> list = new ArrayList<>();
+        list.add(new Fund("jk","sda","Money","23"));
+        list.add(new Fund("fv","sda","Money","23"));
+        list.add(new Fund("cs","sda","Blend","23"));
+        list.add(new Fund("tb","sda","Bond","23"));
+        list.add(new Fund("gd","sda","Money","23"));
+        list.add(new Fund("sf","sda","Bond","23"));
+        list.add(new Fund("fg","sda","Blend","23"));
+        list.add(new Fund("dg","sda","Money","23"));
+        list.add(new Fund("rg","sda","Money","23"));
+        list.add(new Fund("rt","sda","Money","23"));
+        list.add(new Fund("er","sda","Money","23"));
+        list.add(new Fund("ee","sda","Money","23"));
+        list.add(new Fund("ew","sda","Blend","23"));
+        list.add(new Fund("df","sda","Bond","23"));
+
+        // 进行过滤
+        List<Fund> allList = list;
+        List<Fund> moneyList = new ArrayList<>();
+        List<Fund> bondList = new ArrayList<>();
+        List<Fund> blendList = new ArrayList<>();
+        for ( Fund fund: list) {
+            switch (fund.getFundType()){
+                case "Money":  moneyList.add(fund); break;
+                case "Bond": bondList.add(fund); break;
+                case "Blend": blendList.add(fund);break;
+                default: break;
+            }
+        }
+        ((FundListFragment) fragmentList.get(0)).addData(allList);
+        ((FundListFragment) fragmentList.get(1)).addData(moneyList);
+        ((FundListFragment) fragmentList.get(2)).addData(bondList);
+        ((FundListFragment) fragmentList.get(3)).addData(blendList);
+    }
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
