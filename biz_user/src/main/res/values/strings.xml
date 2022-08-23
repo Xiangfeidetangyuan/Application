@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <!-- 支付密码对话框 -->
+    <string name="pay_title"></string>
+</resources>

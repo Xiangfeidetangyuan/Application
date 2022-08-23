@@ -4,11 +4,11 @@
 
     <application >
         <activity
-            android:name=".BuyResultActivity"
+            android:name=".ui.BuyResultActivity"
             android:exported="false"
             android:theme="@style/Theme.lib.user"/>
         <activity
-            android:name=".BuyConfirmActivity"
+            android:name=".ui.BuyConfirmActivity"
             android:exported="true"
             android:theme="@style/Theme.lib.user"
              />

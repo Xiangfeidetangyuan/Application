@@ -13,4 +13,11 @@
     <color name="background_menu">#F0F1F5</color>
     <color name="text_black">#000000</color>
     <color name="black2">#959191</color>
+
+
+    <!-- 矢量图标的颜色 -->
+    <color name="common_icon_color">#7C7C7C</color>
+    <!-- 分割线的颜色 -->
+    <color name="common_line_color">#ECECEC</color>
+
 </resources>

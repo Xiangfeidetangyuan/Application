@@ -20,4 +20,11 @@
     <style name="clearButton">
         <item name="strokeColor">#E5E5E5</item>
     </style>
+
+    <!-- 默认水平分割线样式 -->
+    <style name="HorizontalLineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_size</item>
+        <item name="android:background">@color/common_line_color</item>
+    </style>
 </resources>

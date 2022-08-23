@@ -5,3 +5,5 @@ include ':lib_net'
 
 include ':biz_user'
 
+include ':library:widget'
+include ':library:base'
