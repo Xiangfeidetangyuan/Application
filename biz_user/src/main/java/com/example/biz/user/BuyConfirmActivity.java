@@ -112,7 +112,7 @@ public class BuyConfirmActivity extends AppCompatActivity {
         tvBuyConfirmNextInvest.setText(Html.fromHtml(nextInvest));
 
         // 解析参数  fundId、fundName、
-        boolean isInvest = false;
+        boolean isInvest = true;
         rvBuyConfirmInvest = findViewById(R.id.rv_buy_confirm_invest);
         if(isInvest){
             rvBuyConfirmInvest.setVisibility(View.VISIBLE);

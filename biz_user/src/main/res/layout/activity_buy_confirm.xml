@@ -28,287 +28,298 @@
             android:textColor="#333333"
             android:textSize="18sp" />
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/rv_buy_confirm_fund_company"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rv_buy_confirm_top"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10">
-
-        <ImageView
-            android:id="@+id/iv_buy_confirm_fund_company_logo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
-            android:src="@drawable/refund" />
-
-        <TextView
-            android:id="@+id/tv_buy_confirm_fund_name_and_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/iv_buy_confirm_fund_company_logo"
-            android:text="XXX Fund (Product Code)"
-            android:textColor="@color/text_black"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tv_buy_confirm_fund_issuer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_buy_confirm_fund_company_logo"
-            android:layout_marginLeft="36dp"
-            android:layout_marginTop="12dp"
-            android:text="Issuer: Morgan Stanley"
-            android:textColor="@color/text_black"
-            android:textSize="13sp" />
-    </RelativeLayout>
-    <View
-        android:id="@+id/view_buy_confirm_one"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginRight="@dimen/dp_20"
-        android:background="#E5E6EA"
-        android:layout_below="@id/rv_buy_confirm_fund_company"
-        android:layout_marginTop="@dimen/dp_16"
-        />
-
-    <TextView
-        android:id="@+id/tv_buy_confirm_show_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_buy_confirm_one"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginTop="26dp"
-        android:text="Amount"
-        android:textColor="@color/text_black"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/tv_buy_confirm_show_s"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_buy_confirm_show_amount"
-        android:layout_marginLeft="@dimen/dp_18"
-        android:layout_marginTop="30dp"
-        android:text="S$"
-        android:textColor="@color/text_black"
-        android:textSize="17sp" />
-
-    <TextView
-        android:id="@+id/tv_buy_confirm_fund_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_buy_confirm_show_amount"
-        android:layout_marginLeft="@dimen/dp_40"
-        android:layout_marginTop="10dp"
-        android:padding="@dimen/dp_6"
-        android:textColor="@color/text_black"
-        android:textSize="34sp" />
-
-    <View
-        android:id="@+id/view_buy_confirm_two"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/tv_buy_confirm_fund_amount"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:layout_marginTop="26dp"
-        android:layout_marginRight="@dimen/dp_20"
-        android:background="#E5E6EA" />
-
-    <TextView
-        android:id="@+id/tv_buy_confirm_fund_fee"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_buy_confirm_two"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="@dimen/dp_18"
-        android:textColor="@color/text_black"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/tv_buy_confirm_fund_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_buy_confirm_fund_fee"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_18"
-        android:textColor="@color/text_black"
-        android:textSize="12sp" />
-
-    <View
-        android:id="@+id/view_buy_confirm_three"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@id/tv_buy_confirm_fund_time"
-        android:background="@color/background_menu" />
-
-    <RelativeLayout
-        android:id="@+id/rv_buy_confirm_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_buy_confirm_three">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="Payment Method"
-            android:textColor="@color/text_black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_buy_confirm_show_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:padding="@dimen/dp_8"
-            android:text="Seabank Account( 5206)"
-            android:textColor="@color/text_black"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_buy_confirm_account_max"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_buy_confirm_show_account"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:text="maximum Limit: SGD 100,000.00"
-            android:textColor="@color/text_black"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/tv_buy_confirm_account_ava"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_buy_confirm_account_max"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="4dp"
-            android:text="Available Balance: SGD 25,678.00"
-            android:textColor="@color/text_black"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/iv_buy_confirm_right"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_6"
-            android:src="@drawable/right" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rv_buy_confirm_middle"
-        android:layout_below="@id/rv_buy_confirm_account">
-        <View
-            android:id="@+id/view_buy_confirm_four"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:background="@color/background_menu" />
-
-        <RelativeLayout
-            android:id="@+id/rv_buy_confirm_invest"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_buy_confirm_four"
-            android:layout_marginTop="@dimen/dp_6">
-
-            <TextView
-                android:id="@+id/tv_buy_confirm_show_invest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_10"
-                android:text="Invest Cycle"
-                android:textColor="@color/text_black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_buy_confirm_next_invest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_buy_confirm_show_invest"
-                android:layout_marginTop="@dimen/dp_20"
-                android:background="@color/background_menu"
-                android:textColor="@color/text_black"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tv_buy_confirm_invest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginRight="30dp"
-                android:textColor="@color/text_black"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_6"
-                android:src="@drawable/right" />
-        </RelativeLayout>
-    </RelativeLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rv_buy_confirm_bottom"
-        android:layout_below="@id/rv_buy_confirm_middle">
-        <LinearLayout
+        android:layout_below="@id/rv_buy_confirm_top">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_buy_confirm_show_overview"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rv_buy_confirm_fund_company"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_10"
-                android:text="Product Overview"
-                android:textColor="@color/text_black"
-                android:textSize="14sp" />
-            <TextView
+                android:layout_marginRight="@dimen/dp_10">
+
+                <ImageView
+                    android:id="@+id/iv_buy_confirm_fund_company_logo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:src="@drawable/refund" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_fund_name_and_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@id/iv_buy_confirm_fund_company_logo"
+                    android:text="XXX Fund (Product Code)"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_fund_issuer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_buy_confirm_fund_company_logo"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Issuer: Morgan Stanley"
+                    android:textColor="@color/text_black"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_buy_confirm_one"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
+                android:layout_height="1dp"
+                android:layout_below="@id/rv_buy_confirm_fund_company"
                 android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_16"
                 android:layout_marginRight="@dimen/dp_20"
-                android:drawableLeft="@drawable/reminder"
-                android:background="#E5EEFF"
-                android:text="To protect your investment rights, please read the complete prospectus and other documents before investment."/>
+                android:background="#E5E6EA" />
+
             <TextView
+                android:id="@+id/tv_buy_confirm_show_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_10"
-                android:text="一、产品概括"
-                />
+                android:layout_below="@id/view_buy_confirm_one"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="26dp"
+                android:text="Amount"
+                android:textColor="@color/text_black"
+                android:textSize="18sp" />
+
             <TextView
-                android:id="@+id/tv_buy_confirm_product"
-                android:layout_marginTop="@dimen/dp_6"
+                android:id="@+id/tv_buy_confirm_show_s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_buy_confirm_show_amount"
+                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_marginTop="30dp"
+                android:text="S$"
+                android:textColor="@color/text_black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_buy_confirm_fund_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_buy_confirm_show_amount"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:layout_marginTop="10dp"
+                android:padding="@dimen/dp_6"
+                android:textColor="@color/text_black"
+                android:textSize="34sp" />
+
+            <View
+                android:id="@+id/view_buy_confirm_two"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_buy_confirm_fund_amount"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="26dp"
+                android:layout_marginRight="@dimen/dp_20"
+                android:background="#E5E6EA" />
+
+            <TextView
+                android:id="@+id/tv_buy_confirm_fund_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_buy_confirm_two"
+                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text_black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_buy_confirm_fund_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_buy_confirm_fund_fee"
+                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:textColor="@color/text_black"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/view_buy_confirm_three"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@id/tv_buy_confirm_fund_time"
+                android:background="@color/background_menu" />
+
+            <RelativeLayout
+                android:id="@+id/rv_buy_confirm_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:textSize="13sp"/>
-        </LinearLayout>
+                android:layout_below="@id/view_buy_confirm_three">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="Payment Method"
+                    android:textColor="@color/text_black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_show_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:padding="@dimen/dp_8"
+                    android:text="Seabank Account( 5206)"
+                    android:textColor="@color/text_black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_account_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_buy_confirm_show_account"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:text="maximum Limit: SGD 100,000.00"
+                    android:textColor="@color/text_black"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_account_ava"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_buy_confirm_account_max"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Available Balance: SGD 25,678.00"
+                    android:textColor="@color/text_black"
+                    android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/iv_buy_confirm_right"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_6"
+                    android:src="@drawable/right" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rv_buy_confirm_middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_buy_confirm_account">
+
+                <View
+                    android:id="@+id/view_buy_confirm_four"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="@color/background_menu" />
+
+                <RelativeLayout
+                    android:id="@+id/rv_buy_confirm_invest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view_buy_confirm_four"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_buy_confirm_show_invest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="Invest Cycle"
+                        android:textColor="@color/text_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_confirm_next_invest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_buy_confirm_show_invest"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:background="@color/background_menu"
+                        android:textColor="@color/text_black"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_confirm_invest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="30dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_6"
+                        android:src="@drawable/right" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_buy_confirm_middle"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_show_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="Product Overview"
+                    android:textColor="@color/text_black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_20"
+                    android:background="#E5EEFF"
+                    android:drawableLeft="@drawable/reminder"
+                    android:text="To protect your investment rights, please read the complete prospectus and other documents before investment." />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="一、产品概括" />
+
+                <TextView
+                    android:id="@+id/tv_buy_confirm_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
     <RelativeLayout
